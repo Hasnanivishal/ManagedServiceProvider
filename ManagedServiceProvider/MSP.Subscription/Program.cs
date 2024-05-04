@@ -1,5 +1,7 @@
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using MSP.Subscription.Repository;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,21 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMemory"));
+
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddConsumers(Assembly.GetEntryAssembly());
+
+    x.UsingRabbitMq((context, configurator) =>
+    {
+        var host = builder.Configuration.GetValue<string>("RabbitMqSettings:Host");
+        configurator.Host(host);
+
+        configurator.ConfigureEndpoints(context);
+    });
+});
+
 
 var app = builder.Build();
 

@@ -9,4 +9,6 @@ public class OrderEntity
     public decimal Amount { get; set; }
 
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+
+    public Guid ProfileId { get; set; }
 }

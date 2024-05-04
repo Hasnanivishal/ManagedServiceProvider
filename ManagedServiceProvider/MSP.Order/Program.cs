@@ -1,6 +1,8 @@
 using MongoDB.Driver;
+using MassTransit;
 using MSP.Order.Model;
 using MSP.Order.Repository;
+using MSP.Order.AsyncCommunication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,21 @@ builder.Services.AddSingleton<IMongoDbContext<OrderEntity>>(serviceProvider =>
 {
     var database = serviceProvider.GetService<IMongoDatabase>();
     return new MongoDbContext<OrderEntity>(database!, "OrderDetails");
+});
+
+builder.Services.AddScoped<IPublisherService, PublisherService>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+
+    x.UsingRabbitMq((context, configurator) =>
+    {
+        var host = builder.Configuration.GetValue<string>("RabbitMqSettings:Host");
+        configurator.Host(host);
+
+        configurator.ConfigureEndpoints(context);
+    });
 });
 
 var app = builder.Build();

@@ -2,7 +2,7 @@
 
 public record OrderDto(Guid Id, string Name, decimal Amount);
 
-public record AddOrderDto(string Name, decimal Amount);
+public record AddOrderDto(string Name, decimal Amount, Guid ProfileId);
 
 public static class Extensions
 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MSP.Order.AsyncCommunication;
 using MSP.Order.Model;
 using MSP.Order.Repository;
 
@@ -6,9 +7,11 @@ namespace MSP.Order.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrderController(IMongoDbContext<OrderEntity> mongoDbContext) : ControllerBase
+public class OrderController(IMongoDbContext<OrderEntity> mongoDbContext,
+    IPublisherService publisherService) : ControllerBase
 {
     private readonly IMongoDbContext<OrderEntity> mongoDbContext = mongoDbContext;
+    private readonly IPublisherService publisherService = publisherService;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<OrderDto>>> Get()
@@ -40,12 +43,13 @@ public class OrderController(IMongoDbContext<OrderEntity> mongoDbContext) : Cont
         {
             Id = Guid.NewGuid(),
             Name = addOrderDto.Name,
-            Amount = addOrderDto.Amount
+            Amount = addOrderDto.Amount,
+            ProfileId = addOrderDto.ProfileId
         };
 
         await mongoDbContext.CreateAsync(orderEntity);
 
-        // Once order is created send message to rabbit mq bus using mass transit
+        publisherService.PublishOrderCreated(orderEntity);
 
         return CreatedAtAction(nameof(GetById), new { id = orderEntity.Id }, orderEntity.AsOrderDto());
     }

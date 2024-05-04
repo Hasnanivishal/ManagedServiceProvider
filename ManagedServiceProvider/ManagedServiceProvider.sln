@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Subscription", "MSP.Sub
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Coupon", "MSP.Coupon\MSP.Coupon.csproj", "{11C8F27F-AFC3-4AF0-B2CF-243F95CDCA15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSP.Order", "MSP.Order\MSP.Order.csproj", "{1EADD99F-F787-4A87-9F25-76F1FBE4A400}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Order", "MSP.Order\MSP.Order.csproj", "{1EADD99F-F787-4A87-9F25-76F1FBE4A400}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSP.Common", "MSP.Common\MSP.Common.csproj", "{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1EADD99F-F787-4A87-9F25-76F1FBE4A400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EADD99F-F787-4A87-9F25-76F1FBE4A400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EADD99F-F787-4A87-9F25-76F1FBE4A400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
