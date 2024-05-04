@@ -1,0 +1,6 @@
+@MSP.ApiGateway.Ocelot_HostAddress = http://localhost:5190
+
+GET {{MSP.ApiGateway.Ocelot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

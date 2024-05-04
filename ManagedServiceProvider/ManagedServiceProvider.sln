@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Coupon", "MSP.Coupon\MS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Order", "MSP.Order\MSP.Order.csproj", "{1EADD99F-F787-4A87-9F25-76F1FBE4A400}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSP.Common", "MSP.Common\MSP.Common.csproj", "{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSP.Common", "MSP.Common\MSP.Common.csproj", "{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSP.ApiGateway.Ocelot", "MSP.ApiGateway.Ocelot\MSP.ApiGateway.Ocelot.csproj", "{6B06294E-1E39-4FE2-916D-83B3BA1AF63C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C51FDFAC-1F6D-4280-A260-44C58B7A56EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B06294E-1E39-4FE2-916D-83B3BA1AF63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B06294E-1E39-4FE2-916D-83B3BA1AF63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B06294E-1E39-4FE2-916D-83B3BA1AF63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B06294E-1E39-4FE2-916D-83B3BA1AF63C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
