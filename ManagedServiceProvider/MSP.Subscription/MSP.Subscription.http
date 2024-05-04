@@ -1,0 +1,6 @@
+@MSP.Subscription_HostAddress = http://localhost:5042
+
+GET {{MSP.Subscription_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "MSP.Coupon.Service";
+
+service GrpcCoupon {
+	rpc GetCouponDetails (CouponDetailsRequest) returns (CouponDetailsResponse);
+}
+
+message CouponDetailsRequest {
+	string id =  1;
+}
+
+message CouponDetailsModel {
+	string coupon_number = 1;
+}
+
+message CouponDetailsResponse {
+	repeated CouponDetailsModel coupons = 1;
+}
+

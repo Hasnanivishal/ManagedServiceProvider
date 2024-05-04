@@ -1,0 +1,6 @@
+@MSP.Coupon_HostAddress = http://localhost:5131
+
+GET {{MSP.Coupon_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
