@@ -1,19 +1,13 @@
 ﻿using MongoDB.Driver;
-using MSP.Profile.Model;
-using System.Collections;
+using MSP.Order.Model;
 using System.Linq.Expressions;
 
-namespace MSP.Profile.Repository;
+namespace MSP.Order.Repository;
 
-public class MongoDbContext<T> : IMongoDbContext<T> where T : ProfileEntity
+public class MongoDbContext<T>(IMongoDatabase database, string collectionName) : IMongoDbContext<T> where T : OrderEntity
 {
-    private readonly IMongoCollection<T> dbCollection;
+    private readonly IMongoCollection<T> dbCollection = database.GetCollection<T>(collectionName);
     private readonly FilterDefinitionBuilder<T> filterBuilder = Builders<T>.Filter;
-
-    public MongoDbContext(IMongoDatabase database, string collectionName)
-    {
-        dbCollection = database.GetCollection<T>(collectionName);
-    }
 
     public async Task<IReadOnlyCollection<T>> GetAllAsync()
     {
@@ -48,10 +42,7 @@ public class MongoDbContext<T> : IMongoDbContext<T> where T : ProfileEntity
 
     public async Task UpdateAsync(T entity)
     {
-        if (entity == null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
+        ArgumentNullException.ThrowIfNull(entity);
 
         FilterDefinition<T> filter = filterBuilder.Eq(existingEntity => existingEntity.Id, entity.Id);
         await dbCollection.ReplaceOneAsync(filter, entity);

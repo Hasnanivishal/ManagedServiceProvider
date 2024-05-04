@@ -1,0 +1,6 @@
+@MSP.Order_HostAddress = http://localhost:5133
+
+GET {{MSP.Order_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

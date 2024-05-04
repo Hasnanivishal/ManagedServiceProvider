@@ -68,7 +68,7 @@ namespace MSP.Profile.Controllers
 
             await mongoDbContext.CreateAsync(profileEntity);
 
-            return CreatedAtAction(nameof(GetById), new { id = profileEntity.Id }, profileEntity);
+            return CreatedAtAction(nameof(GetById), new { id = profileEntity.Id }, profileEntity.AsProfileDto());
         }
 
         //[HttpPut("{id}")]
