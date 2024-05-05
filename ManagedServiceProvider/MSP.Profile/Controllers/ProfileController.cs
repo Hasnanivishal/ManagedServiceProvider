@@ -3,6 +3,8 @@ using MSP.Profile.Model;
 using MSP.Profile.Repository;
 using MSP.Profile.SyncCommunication.gRPC;
 using MSP.Profile.SyncCommunication.Http;
+using StackExchange.Redis;
+using System.Text.Json;
 
 namespace MSP.Profile.Controllers
 {
@@ -10,12 +12,13 @@ namespace MSP.Profile.Controllers
     [ApiController]
     public class ProfileController(IMongoDbContext<ProfileEntity> mongoDbContext,
         IHttpCommunicationClient httpCommunicationClient,
-        IGrpcCommunicationService grpcCommunicationService) : ControllerBase
+        IGrpcCommunicationService grpcCommunicationService,
+        IConnectionMultiplexer muxer) : ControllerBase
     {
         private readonly IMongoDbContext<ProfileEntity> mongoDbContext = mongoDbContext;
-
         private readonly IHttpCommunicationClient httpCommunicationClient = httpCommunicationClient;
         private readonly IGrpcCommunicationService grpcCommunicationService = grpcCommunicationService;
+        private readonly IDatabase _redis = muxer.GetDatabase();
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProfileDto>>> Get()
@@ -28,14 +31,30 @@ namespace MSP.Profile.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProfileDto>> GetById(Guid id)
         {
-            var item = await mongoDbContext.GetAsync(id);
+            // Define a unique key based on profile id
+            string keyName = $"ProfileDettailsOf:{id}";
 
-            if (item is null)
+            // Get data from Redis
+            string json = await _redis.StringGetAsync(keyName);
+
+            if (string.IsNullOrEmpty(json))
             {
-                return NotFound();
+                var item = await mongoDbContext.GetAsync(id);
+
+                if (item is null)
+                {
+                    return NotFound();
+                }
+
+                json = JsonSerializer.Serialize(item);
+
+                var setTask = _redis.StringSetAsync(keyName, json);
+                var expireTask = _redis.KeyExpireAsync(keyName, TimeSpan.FromSeconds(300));
+
+                await Task.WhenAll(setTask, expireTask);
             }
 
-            return item.AsProfileDto();
+            return JsonSerializer.Deserialize<ProfileEntity>(json)!.AsProfileDto();
         }
 
         [HttpGet("GetFullProfile/{id}")]

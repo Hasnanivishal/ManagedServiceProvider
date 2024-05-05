@@ -3,6 +3,7 @@ using MSP.Profile.Model;
 using MSP.Profile.Repository;
 using MSP.Profile.SyncCommunication.gRPC;
 using MSP.Profile.SyncCommunication.Http;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
 
 builder.Services.AddHttpClient<IHttpCommunicationClient, HttpCommunicationClient>();
 builder.Services.AddScoped<IGrpcCommunicationService, GrpcCommunicationService>();
