@@ -9,15 +9,21 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MSP.Order/MSP.Order.csproj", "MSP.Order/"]
-RUN dotnet restore "./MSP.Order/MSP.Order.csproj"
+
+# copy the class library project
+COPY ["./MSP.Common/MSP.Common.csproj", "MSP.Common/"]
+COPY ["./MSP.Order/MSP.Order.csproj", "MSP.Order/"]
+
+RUN dotnet restore "MSP.Order/MSP.Order.csproj"
+
 COPY . .
+
 WORKDIR "/src/MSP.Order"
-RUN dotnet build "./MSP.Order.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "MSP.Order.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./MSP.Order.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "MSP.Order.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

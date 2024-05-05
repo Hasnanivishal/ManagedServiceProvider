@@ -1,0 +1,65 @@
+# define the pod deployment of mongodb
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb
+spec:
+  serviceName: "mongodb"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:latest
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongodb-data
+          mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+---
+
+# create a cluster ip servie to internal communication
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-profile-clusterip-srv
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+
+---
+
+# Loadbalancer for locally access
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mongodb-loadbalancer
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: mongodb
+#   ports:
+#   - name: mongodb
+#     protocol: TCP
+#     port: 27017
+#     targetPort: 27017
