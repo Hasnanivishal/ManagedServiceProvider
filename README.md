@@ -51,3 +51,9 @@ kubectl delete service <name>
 kubectl delete pod <name>
 
 ```
+
+* Execute Powershell commands to start and stop the k8s cluster
+
+powershell -executionpolicy bypass -File K8S-Up.ps1
+
+powershell -executionpolicy bypass -File K8S-Down.ps1
