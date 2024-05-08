@@ -47,7 +47,7 @@ public class OrderController(IMongoDbContext<OrderEntity> mongoDbContext,
             ProfileId = addOrderDto.ProfileId
         };
 
-        await mongoDbContext.CreateAsync(orderEntity);
+        // await mongoDbContext.CreateAsync(orderEntity);
 
         publisherService.PublishOrderCreated(orderEntity);
 

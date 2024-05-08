@@ -35,6 +35,13 @@ builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
 
+    //x.UsingAzureServiceBus((context, configurator) =>
+    //{
+    //   configurator.Host(builder.Configuration.GetValue<string>("AzureBusServiceEndPoint"));
+
+    //    configurator.ConfigureEndpoints(context);
+    //});
+
     x.UsingRabbitMq((context, configurator) =>
     {
         var host = builder.Configuration.GetValue<string>("RabbitMqSettings:Host");

@@ -1,3 +1,5 @@
+using Azure.Identity;
+using Microsoft.Extensions.Azure;
 using MongoDB.Driver;
 using MSP.Profile.Model;
 using MSP.Profile.Repository;
@@ -32,8 +34,18 @@ builder.Services.AddSingleton<IMongoDbContext<ProfileEntity>>(serviceProvider =>
     return new MongoDbContext<ProfileEntity>(database!, "ProductDetails");
 });
 
-var app = builder.Build();
+// Azure Key Value Setup
+//var keyValueUri = new Uri(builder.Configuration.GetValue<string>("KeyVaultUrl")!);
+//var tenantId = builder.Configuration.GetValue<string>("TenantId");
+//var azureCredentials = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+//{
+//    TenantId = tenantId
+//});
+//builder.Configuration.AddAzureKeyVault(keyValueUri, azureCredentials);
+//var secretValue = builder.Configuration.GetValue<string>("SecretKeyValue");
 
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
