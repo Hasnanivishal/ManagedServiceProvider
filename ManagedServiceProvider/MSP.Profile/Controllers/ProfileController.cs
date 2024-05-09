@@ -13,11 +13,15 @@ namespace MSP.Profile.Controllers
     public class ProfileController(IMongoDbContext<ProfileEntity> mongoDbContext,
         IHttpCommunicationClient httpCommunicationClient,
         IGrpcCommunicationService grpcCommunicationService,
-        IConnectionMultiplexer muxer) : ControllerBase
+        IConnectionMultiplexer muxer,
+        ILogger<ProfileController> logger
+        ) : ControllerBase
     {
         private readonly IMongoDbContext<ProfileEntity> mongoDbContext = mongoDbContext;
         private readonly IHttpCommunicationClient httpCommunicationClient = httpCommunicationClient;
         private readonly IGrpcCommunicationService grpcCommunicationService = grpcCommunicationService;
+        private readonly ILogger<ProfileController> logger = logger;
+
         private readonly IDatabase _redis = muxer.GetDatabase();
 
         [HttpGet]
@@ -31,22 +35,32 @@ namespace MSP.Profile.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProfileDto>> GetById(Guid id)
         {
+            logger.LogDebug($"GetById is called with id - {id}");
+
             // Define a unique key based on profile id
             string keyName = $"ProfileDettailsOf:{id}";
+
+            logger.LogDebug($"Redis keyName is - {keyName}");
 
             // Get data from Redis
             string json = await _redis.StringGetAsync(keyName);
 
             if (string.IsNullOrEmpty(json))
             {
+                logger.LogDebug($"Redis cache not hit");
+
                 var item = await mongoDbContext.GetAsync(id);
 
                 if (item is null)
                 {
+                    logger.LogError($"Invalid request {id}");
+
                     return NotFound();
                 }
 
                 json = JsonSerializer.Serialize(item);
+
+                logger.LogDebug($"Set Redis cache");
 
                 var setTask = _redis.StringSetAsync(keyName, json);
                 var expireTask = _redis.KeyExpireAsync(keyName, TimeSpan.FromSeconds(300));

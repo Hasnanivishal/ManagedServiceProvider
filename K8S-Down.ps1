@@ -15,6 +15,11 @@ kubectl delete service rabbitmq-loadbalancer
 kubectl delete service subscription-clusterip-srv
 
 kubectl delete pod mongodb-0
+kubectl delete pod redis-0
 kubectl delete StatefulSet mongodb
 kubectl delete pvc mongodb-data-mongodb-0
+
+kubectl delete --all service
+kubectl delete --all deployment
+kubectl delete --all pod
 

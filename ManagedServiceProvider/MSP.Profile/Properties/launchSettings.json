@@ -5,7 +5,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MongoDbSettings__Host": "http://localhost:5099"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5045"

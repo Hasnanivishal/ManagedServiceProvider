@@ -14,7 +14,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect("localhost"));
+var redisHost = builder.Configuration.GetValue<string>("RedisHost");
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisHost));
 
 builder.Services.AddHttpClient<IHttpCommunicationClient, HttpCommunicationClient>();
 builder.Services.AddScoped<IGrpcCommunicationService, GrpcCommunicationService>();

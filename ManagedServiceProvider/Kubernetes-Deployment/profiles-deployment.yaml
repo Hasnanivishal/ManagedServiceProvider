@@ -15,7 +15,11 @@ spec:
       containers:
         - name: profileservice
           image: hasnanivishal/msp.profile:latest
-
+          env: 
+          - name: "MongoDbSettings__Host"
+            value: "mongodb-profile-clusterip-srv"
+          - name: "RedisHost"
+            value: "redis-profile-clusterip-srv"
 ---
 apiVersion: v1
 kind: Service

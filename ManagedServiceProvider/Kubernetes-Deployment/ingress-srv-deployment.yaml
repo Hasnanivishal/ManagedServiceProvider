@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: my-msp-provider.com
+      http:
+        paths:
+          - path: /api/profile
+            pathType: Prefix
+            backend:
+              service:
+                name: profile-clusterip-srv
+                port:
+                  number: 8080
+          - path: /api/order
+            pathType: Prefix
+            backend:
+              service:
+                name: order-clusterip-srv
+                port:
+                  number: 8080
+              
